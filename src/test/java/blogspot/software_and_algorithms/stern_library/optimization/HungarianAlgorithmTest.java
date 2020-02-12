@@ -8,17 +8,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /* Copyright (c) 2012 Kevin L. Stern
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,7 +30,7 @@ import org.junit.Test;
 
 /**
  * Test class for HungarianAlgorithm.
- * 
+ *
  * @author Kevin L. Stern
  */
 public class HungarianAlgorithmTest {
@@ -52,9 +52,12 @@ public class HungarianAlgorithmTest {
   @Test
   public void test1() {
     double[][] matrix = new double[][] { new double[] { 4.0, 1.5, 4.0 },
-        new double[] { 4.0, 4.5, 6.0 }, new double[] { 3.0, 2.25, 3.0 } };
+            new double[] { 4.0, 4.5, 6.0 }, new double[] { 3.0, 2.25, 3.0 } };
     HungarianAlgorithm b = new HungarianAlgorithm(matrix);
     int[] match = b.execute();
+    for (int i = 0; i < match.length; i++) {
+      System.out.println(match[i]);
+    }
     Assert.assertTrue(Arrays.equals(new int[] { 1, 0, 2 }, match));
     Assert.assertEquals(8.5, computeCost(matrix, match), 0.0000001);
   }
@@ -62,7 +65,7 @@ public class HungarianAlgorithmTest {
   @Test
   public void test2() {
     double[][] matrix = new double[][] { new double[] { 1.0, 1.0, 0.8 },
-        new double[] { 0.9, 0.8, 0.1 }, new double[] { 0.9, 0.7, 0.4 } };
+            new double[] { 0.9, 0.8, 0.1 }, new double[] { 0.9, 0.7, 0.4 } };
     HungarianAlgorithm b = new HungarianAlgorithm(matrix);
     int[] match = b.execute();
     Assert.assertTrue(Arrays.equals(new int[] { 0, 2, 1 }, match));
@@ -72,9 +75,23 @@ public class HungarianAlgorithmTest {
   @Test
   public void test3() {
     double[][] matrix = new double[][] { new double[] { 6.0, 0.0, 7.0, 5.0 },
-        new double[] { 2.0, 6.0, 2.0, 6.0 },
-        new double[] { 2.0, 7.0, 2.0, 1.0 },
-        new double[] { 9.0, 4.0, 7.0, 1.0 } };
+            new double[] { 2.0, 6.0, 2.0, 6.0 },
+            new double[] { 2.0, 7.0, 2.0, 1.0 },
+            new double[] { 9.0, 4.0, 7.0, 1.0 } };
+    HungarianAlgorithm b = new HungarianAlgorithm(matrix);
+    int[] match = b.execute();
+    Assert.assertTrue(Arrays.equals(new int[] { 1, 0, 2, 3 }, match));
+    Assert.assertEquals(5, computeCost(matrix, match), 0.0000001);
+  }
+
+  @Test
+  public void testMoaStreamKMResults() {
+
+    double[] result1 = new double[]{};
+    double[][] matrix = new double[][] { new double[] { 6.0, 0.0, 7.0, 5.0 },
+            new double[] { 2.0, 6.0, 2.0, 6.0 },
+            new double[] { 2.0, 7.0, 2.0, 1.0 },
+            new double[] { 9.0, 4.0, 7.0, 1.0 } };
     HungarianAlgorithm b = new HungarianAlgorithm(matrix);
     int[] match = b.execute();
     Assert.assertTrue(Arrays.equals(new int[] { 1, 0, 2, 3 }, match));
@@ -85,17 +102,17 @@ public class HungarianAlgorithmTest {
   public void testInvalidInput() {
     try {
       new HungarianAlgorithm(new double[][] { new double[] { 1, 2 },
-          new double[] { 3 } });
+              new double[] { 3 } });
       Assert.fail();
     } catch (IllegalArgumentException e) {}
     try {
       new HungarianAlgorithm(new double[][] { new double[] { 1, 2 },
-          new double[] { 3, Double.POSITIVE_INFINITY } });
+              new double[] { 3, Double.POSITIVE_INFINITY } });
       Assert.fail();
     } catch (IllegalArgumentException e) {}
     try {
       new HungarianAlgorithm(new double[][] { new double[] { 1, 2 },
-          new double[] { 3, 1.0 / 0.0 } });
+              new double[] { 3, 1.0 / 0.0 } });
       Assert.fail();
     } catch (IllegalArgumentException e) {}
     try {
@@ -107,10 +124,10 @@ public class HungarianAlgorithmTest {
   @Test
   public void testUnassignedJob() {
     double[][] matrix = new double[][] {
-        new double[] { 6.0, 0.0, 7.0, 5.0, 2.0 },
-        new double[] { 2.0, 6.0, 2.0, 6.0, 7.0 },
-        new double[] { 2.0, 7.0, 2.0, 1.0, 1.0 },
-        new double[] { 9.0, 4.0, 7.0, 1.0, 0.0 } };
+            new double[] { 6.0, 0.0, 7.0, 5.0, 2.0 },
+            new double[] { 2.0, 6.0, 2.0, 6.0, 7.0 },
+            new double[] { 2.0, 7.0, 2.0, 1.0, 1.0 },
+            new double[] { 9.0, 4.0, 7.0, 1.0, 0.0 } };
     HungarianAlgorithm b = new HungarianAlgorithm(matrix);
     int[] match = b.execute();
     Assert.assertTrue(Arrays.equals(new int[] { 1, 0, 3, 4 }, match));
@@ -120,10 +137,10 @@ public class HungarianAlgorithmTest {
   @Test
   public void testUnassignedWorker() {
     double[][] matrix = new double[][] { new double[] { 6.0, 0.0, 7.0, 5.0 },
-        new double[] { 2.0, 6.0, 2.0, 6.0 },
-        new double[] { 2.0, 7.0, 2.0, 1.0 },
-        new double[] { 9.0, 4.0, 7.0, 1.0 },
-        new double[] { 0.0, 0.0, 0.0, 0.0 } };
+            new double[] { 2.0, 6.0, 2.0, 6.0 },
+            new double[] { 2.0, 7.0, 2.0, 1.0 },
+            new double[] { 9.0, 4.0, 7.0, 1.0 },
+            new double[] { 0.0, 0.0, 0.0, 0.0 } };
     HungarianAlgorithm b = new HungarianAlgorithm(matrix);
     int[] match = b.execute();
     Assert.assertTrue(Arrays.equals(new int[] { 1, -1, 2, 3, 0 }, match));
